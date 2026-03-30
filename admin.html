@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Owner Dashboard</title>
+  <style>
+    :root {
+      --bg: #0b0b0b;
+      --panel: rgba(18, 18, 18, 0.94);
+      --panel-2: #151515;
+      --panel-3: #1d1d1d;
+      --text: #f5f5f5;
+      --muted: #a9a9a9;
+      --line: rgba(255,255,255,0.08);
+      --accent: #ff5a3c;
+      --accent-2: #ffb703;
+      --good: #3ddc97;
+      --shadow: 0 18px 50px rgba(0,0,0,0.35);
+      --radius: 22px;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(1100px 500px at 10% 0%, rgba(255,90,60,0.18), transparent 55%),
+        radial-gradient(800px 420px at 90% 10%, rgba(255,183,3,0.10), transparent 45%),
+        linear-gradient(180deg, #090909, #101010 55%, #090909);
+      min-height: 100vh;
+    }
+
+    .page {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 18px;
+    }
+
+    .shell {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      overflow: hidden;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-mark {
+      width: 48px;
+      height: 48px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      box-shadow: 0 12px 30px rgba(255,90,60,0.18);
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 22px;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+    }
+
+    .brand p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 14px;
+      padding: 12px 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform .18s ease, opacity .18s ease, background .18s ease;
+      color: #fff;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.10);
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn:active { transform: translateY(1px); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), #ff8c42);
+      border-color: transparent;
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, #25c98d, #3ddc97);
+      color: #07130f;
+      border-color: transparent;
+    }
+
+    .btn-info {
+      background: linear-gradient(135deg, #3b82f6, #60a5fa);
+      color: #fff;
+      border-color: transparent;
+    }
+
+    .login-area {
+      padding: 28px 20px 30px;
+      max-width: 460px;
+      margin: 0 auto;
+    }
+
+    .login-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 18px;
+    }
+
+    .login-card h2 {
+      margin: 0 0 8px;
+      font-size: 24px;
+      letter-spacing: -0.03em;
+    }
+
+    .login-card p {
+      margin: 0 0 14px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .login-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.04);
+      color: #fff;
+      outline: none;
+      font: inherit;
+    }
+    input::placeholder { color: #8f8f8f; }
+
+    .muted { color: var(--muted); }
+
+    .dashboard {
+      display: none;
+      padding: 18px 18px 22px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .stat {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 16px;
+    }
+
+    .stat span {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 6px;
+    }
+
+    .stat strong {
+      font-size: 28px;
+      letter-spacing: -0.03em;
+    }
+
+    .columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .column {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      overflow: hidden;
+      min-height: 60vh;
+    }
+
+    .column-head {
+      padding: 16px 16px 14px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .column-head h2 {
+      margin: 0;
+      font-size: 20px;
+      letter-spacing: -0.02em;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.05);
+    }
+
+    .pill.new { color: #ffd0c7; }
+    .pill.acc { color: #c9ffe7; }
+    .pill.hist { color: #a5b4fc; }
+
+    .orders {
+      padding: 14px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .empty {
+      color: var(--muted);
+      padding: 12px 2px;
+    }
+
+    .order-card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.03));
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 18px;
+      padding: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+    }
+
+    .order-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+
+    .order-id {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin: 0;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.05);
+    }
+
+    .status.new { color: #ffd0c7; }
+    .status.accepted { color: #c9ffe7; }
+    .status.delivered { color: #a5b4fc; }
+
+    .customer {
+      margin-top: 10px;
+      display: grid;
+      gap: 6px;
+      color: #f2f2f2;
+    }
+
+    .customer .line {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .details {
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      display: grid;
+      gap: 10px;
+    }
+
+    .item-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .item-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.04);
+    }
+
+    .item-row small {
+      color: var(--muted);
+      display: block;
+      margin-top: 3px;
+    }
+
+    .order-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+
+    .total {
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 20px;
+      transform: translateX(-50%);
+      background: rgba(17,17,17,0.98);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.10);
+      padding: 12px 16px;
+      border-radius: 999px;
+      box-shadow: var(--shadow);
+      z-index: 30;
+      display: none;
+      max-width: calc(100vw - 24px);
+      text-align: center;
+    }
+
+    /* History Specific styling */
+    .history-column {
+      grid-column: span 2;
+    }
+
+    @media (max-width: 980px) {
+      .columns, .stats { grid-template-columns: 1fr; }
+      .history-column { grid-column: span 1; }
+    }
+
+    @media (max-width: 640px) {
+      .page { padding: 12px; }
+      .topbar { padding: 14px; }
+      .dashboard { padding: 14px; }
+      .column { min-height: auto; }
+      .btn, input { width: 100%; }
+      .top-actions { width: 100%; }
+      .top-actions .btn { flex: 1 1 100%; }
+      .top-actions #logoutBtn { flex: 1 1 auto; width: auto;}
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="shell">
+      <div class="topbar">
+        <div class="brand">
+          <div class="brand-mark"></div>
+          <div>
+            <h1>Owner Dashboard</h1>
+            <p id="dashboardSubtitle">Live restaurant orders</p>
+          </div>
+        </div>
+
+        <div class="top-actions">
+          <button class="btn" id="refreshBtn" onclick="manualRefresh()" style="display:none;">Refresh</button>
+          <button class="btn" id="historyBtn" onclick="toggleView('history')" style="display:none;">History</button>
+          <button class="btn" id="liveBtn" onclick="toggleView('live')" style="display:none;">Back to Live</button>
+          <button class="btn btn-primary" id="logoutBtn" onclick="logout()" style="display:none;">Logout</button>
+        </div>
+      </div>
+
+      <div id="loginBox" class="login-area">
+        <div class="login-card">
+          <h2>Sign in to continue</h2>
+          <p>Use the owner account to see new orders in real time and accept them instantly.</p>
+          <div class="login-grid">
+            <input id="email" type="email" placeholder="Owner email" />
+            <input id="password" type="password" placeholder="Password" />
+            <button class="btn btn-primary" onclick="login()">Login</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="dashboard" class="dashboard">
+        <div class="stats">
+          <div class="stat"><span>New Orders</span><strong id="newCount">0</strong></div>
+          <div class="stat"><span>Accepted Orders</span><strong id="acceptedCount">0</strong></div>
+        </div>
+
+        <div class="columns">
+          <section class="column">
+            <div class="column-head">
+              <div>
+                <h2>New Orders</h2>
+                <div class="muted" style="font-size:13px; margin-top:4px;">These stay here until you accept them.</div>
+              </div>
+              <div class="pill new">Waiting for accept</div>
+            </div>
+            <div id="newOrders" class="orders"></div>
+          </section>
+
+          <section class="column">
+            <div class="column-head">
+              <div>
+                <h2>Accepted Orders</h2>
+                <div class="muted" style="font-size:13px; margin-top:4px;">Ready to be prepared and delivered.</div>
+              </div>
+              <div class="pill acc">In Progress</div>
+            </div>
+            <div id="acceptedOrders" class="orders"></div>
+          </section>
+        </div>
+      </div>
+
+      <div id="historyView" class="dashboard">
+        <div class="stats" style="grid-template-columns: 1fr;">
+          <div class="stat"><span>Total Completed Orders</span><strong id="historyCount">0</strong></div>
+        </div>
+
+        <div class="columns">
+          <section class="column history-column">
+            <div class="column-head">
+              <div>
+                <h2>Order History</h2>
+                <div class="muted" style="font-size:13px; margin-top:4px;">Successfully delivered orders.</div>
+              </div>
+              <div class="pill hist">Delivered</div>
+            </div>
+            <div id="historyOrders" class="orders" style="grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));"></div>
+          </section>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
+    import {
+      getFirestore,
+      collection,
+      query,
+      orderBy,
+      onSnapshot,
+      doc,
+      updateDoc
+    } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
+    import {
+      getAuth,
+      signInWithEmailAndPassword,
+      signOut,
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAQ6Sjxq1PwMTgczl5srHAA9rvJ-ti778M",
+      authDomain: "practice-28619.firebaseapp.com",
+      projectId: "practice-28619",
+      storageBucket: "practice-28619.firebasestorage.app",
+      messagingSenderId: "817976624600",
+      appId: "1:817976624600:web:c1371e9489817121e41ead"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+
+    let unsubscribeOrders = null;
+    let latestSnapshot = null;
+
+    const el = (id) => document.getElementById(id);
+
+    function toast(message) {
+      const t = el("toast");
+      t.textContent = message;
+      t.style.display = "block";
+      clearTimeout(window.__toastTimer);
+      window.__toastTimer = setTimeout(() => { t.style.display = "none"; }, 1800);
+    }
+
+    function safeText(value, fallback = "—") {
+      const str = String(value ?? "").trim();
+      return str || fallback;
+    }
+
+    function formatItems(items = []) {
+      if (!items.length) {
+        return `<div class="empty">No items found.</div>`;
+      }
+      return `
+        <div class="item-list">
+          ${items.map((item) => `
+            <div class="item-row">
+              <div>
+                <strong>${safeText(item.name)}</strong>
+                <small>₹${Number(item.price || 0)} × ${Number(item.qty || 0)}</small>
+              </div>
+              <strong>₹${Number(item.price || 0) * Number(item.qty || 0)}</strong>
+            </div>
+          `).join("")}
+        </div>
+      `;
+    }
+
+    function orderCardHTML(order, id) {
+      const rawStatus = order.status || "New";
+      const status = rawStatus.toLowerCase();
+      const statusLabel = order.status || "New";
+      const items = order.items || [];
+      const total = Number(order.total || 0);
+      const lineCount = Array.isArray(items) ? items.reduce((sum, item) => sum + Number(item.qty || 0), 0) : 0;
+      const note = safeText(order.customerNote, "No note");
+
+      // Determine Action Button based on status
+      let actionBtn = "";
+      if (status === "new" || status === "preparing") {
+        actionBtn = `<button class="btn btn-success" onclick="acceptOrder('${id}')">Accept Order</button>`;
+      } else if (status === "accepted") {
+        actionBtn = `<button class="btn btn-info" onclick="markDelivered('${id}')">Mark Delivered</button>`;
+      }
+
+      return `
+        <article class="order-card">
+          <div class="order-top">
+            <div>
+              <p class="order-id">${safeText(order.orderId, id)}</p>
+              <div class="customer">
+                <strong>${safeText(order.customerName, "Guest")}</strong>
+                <div class="line"><strong>Phone:</strong> ${safeText(order.customerPhone)}</div>
+                <div class="line"><strong>Address:</strong> ${safeText(order.customerAddress)}</div>
+                <div class="line"><strong>Note:</strong> ${note}</div>
+              </div>
+            </div>
+            <div class="status ${status}">${statusLabel}</div>
+          </div>
+
+          <div class="details">
+            <div class="item-list">
+              ${formatItems(items)}
+            </div>
+          </div>
+
+          <div class="order-footer">
+            <div class="muted">${lineCount} item${lineCount === 1 ? "" : "s"}</div>
+            <div class="total">₹${total}</div>
+            ${actionBtn}
+          </div>
+        </article>
+      `;
+    }
+
+    function renderOrders(snapshot) {
+      latestSnapshot = snapshot;
+      const newRoot = el("newOrders");
+      const acceptedRoot = el("acceptedOrders");
+      const historyRoot = el("historyOrders");
+      
+      newRoot.innerHTML = "";
+      acceptedRoot.innerHTML = "";
+      historyRoot.innerHTML = "";
+
+      const newOrders = [];
+      const acceptedOrders = [];
+      const historyOrders = [];
+
+      snapshot.forEach((docSnap) => {
+        const order = docSnap.data();
+        const item = { id: docSnap.id, order };
+        const status = String(order.status || "New").toLowerCase();
+        
+        if (status === "accepted") {
+          acceptedOrders.push(item);
+        } else if (status === "delivered" || status === "completed") {
+          historyOrders.push(item);
+        } else {
+          newOrders.push(item);
+        }
+      });
+
+      // Update the Counters
+      el("newCount").textContent = newOrders.length;
+      el("acceptedCount").textContent = acceptedOrders.length;
+      el("historyCount").textContent = historyOrders.length;
+
+      // Render Arrays to UI
+      if (!newOrders.length) {
+        newRoot.innerHTML = `<div class="empty">No new orders yet.</div>`;
+      } else {
+        newRoot.innerHTML = newOrders.map(({ id, order }) => orderCardHTML(order, id)).join("");
+      }
+
+      if (!acceptedOrders.length) {
+        acceptedRoot.innerHTML = `<div class="empty">No accepted orders yet.</div>`;
+      } else {
+        acceptedRoot.innerHTML = acceptedOrders.map(({ id, order }) => orderCardHTML(order, id)).join("");
+      }
+
+      if (!historyOrders.length) {
+        historyRoot.innerHTML = `<div class="empty">No delivered orders yet.</div>`;
+      } else {
+        historyRoot.innerHTML = historyOrders.map(({ id, order }) => orderCardHTML(order, id)).join("");
+      }
+    }
+
+    // Toggle between Live and History views
+    window.toggleView = function (view) {
+      const dashboard = el("dashboard");
+      const historyView = el("historyView");
+      const historyBtn = el("historyBtn");
+      const liveBtn = el("liveBtn");
+      const subtitle = el("dashboardSubtitle");
+
+      if (view === 'history') {
+        dashboard.style.display = "none";
+        historyView.style.display = "block";
+        historyBtn.style.display = "none";
+        liveBtn.style.display = "inline-flex";
+        subtitle.textContent = "Completed & delivered orders";
+      } else {
+        dashboard.style.display = "block";
+        historyView.style.display = "none";
+        historyBtn.style.display = "inline-flex";
+        liveBtn.style.display = "none";
+        subtitle.textContent = "Live restaurant orders";
+      }
+    };
+
+    window.login = async function () {
+      const email = el("email").value.trim();
+      const password = el("password").value.trim();
+
+      if (!email || !password) {
+        toast("Enter email and password");
+        return;
+      }
+
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+      } catch (err) {
+        alert("Login failed: " + err.message);
+      }
+    };
+
+    window.logout = async function () {
+      await signOut(auth);
+    };
+
+    window.acceptOrder = async function (docId) {
+      try {
+        await updateDoc(doc(db, "orders", docId), { status: "Accepted" });
+        toast("Order accepted");
+      } catch (err) {
+        console.error(err);
+        toast("Could not accept order");
+      }
+    };
+
+    window.markDelivered = async function (docId) {
+      try {
+        await updateDoc(doc(db, "orders", docId), { status: "Delivered" });
+        toast("Order marked as delivered!");
+      } catch (err) {
+        console.error(err);
+        toast("Could not mark as delivered");
+      }
+    };
+
+    window.manualRefresh = function () {
+      if (latestSnapshot) renderOrders(latestSnapshot);
+      toast("Refreshed");
+    };
+
+    onAuthStateChanged(auth, (user) => {
+      const loginBox = el("loginBox");
+      const logoutBtn = el("logoutBtn");
+      const refreshBtn = el("refreshBtn");
+      const historyBtn = el("historyBtn");
+
+      if (user) {
+        loginBox.style.display = "none";
+        logoutBtn.style.display = "inline-flex";
+        refreshBtn.style.display = "inline-flex";
+        
+        // Start on the live dashboard by default
+        toggleView('live');
+
+        const q = query(collection(db, "orders"), orderBy("createdAt", "desc"));
+
+        if (unsubscribeOrders) unsubscribeOrders();
+        unsubscribeOrders = onSnapshot(q, (snapshot) => {
+          renderOrders(snapshot);
+        });
+      } else {
+        loginBox.style.display = "block";
+        el("dashboard").style.display = "none";
+        el("historyView").style.display = "none";
+        
+        logoutBtn.style.display = "none";
+        refreshBtn.style.display = "none";
+        historyBtn.style.display = "none";
+        el("liveBtn").style.display = "none";
+
+        if (unsubscribeOrders) {
+          unsubscribeOrders();
+          unsubscribeOrders = null;
+        }
+      }
+    });
+  </script>
+</body>
+</html>
