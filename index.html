@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Nimantran — Bhojanalay and Restaurant</title>
+  <title>Happy Valley — Bhojanalay and Restaurant</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -763,7 +763,7 @@
           <div class="slide-caption">
             <div>
               <div class="slide-chip" id="slideChip">Signature dining</div>
-              <h2 class="slide-title" id="slideTitle">Taste the best of Nimantran</h2>
+              <h2 class="slide-title" id="slideTitle">Taste the best of Happy Valley</h2>
             </div>
             <div class="slide-dots" id="slideDots"></div>
           </div>
@@ -771,7 +771,7 @@
 
         <div class="hero-content">
           <div class="eyebrow">Classic dining • Freshly prepared • Easy ordering</div>
-          <h1 class="restaurant-name"><span>Nimantran</span></h1>
+          <h1 class="restaurant-name"><span>Happy Valley</span></h1>
           <div class="restaurant-subtitle">Bhojanalay &amp; Restaurant</div>
 
           <p class="hero-copy">
@@ -779,9 +779,9 @@
           </p>
 
           <div class="hero-actions">
-            <button class="btn btn-primary" onclick="goToMenu()">Check Menu</button>
-            <button class="btn btn-primary" onclick="goToReservation()">Book Reservation</button>
-            <button class="btn btn-secondary" onclick="copyOwnerNumber()">Call the Owner</button>
+            <button class="btn btn-primary" type="button" onclick="goToMenu()">Check Menu</button>
+            <button class="btn btn-primary" type="button" onclick="goToReservationPage()">Book Reservation</button>
+            <button class="btn btn-secondary" type="button" onclick="copyOwnerNumber()">Call the Owner</button>
           </div>
 
           <div class="hero-info">
@@ -806,15 +806,15 @@
           <div class="brand-small">
             <div class="brand-mark"></div>
             <div>
-              <h2>Nimantran</h2>
+              <h2>Happy Valley</h2>
               <p>Bhojanalay and restaurant</p>
             </div>
           </div>
 
           <div class="mini-actions">
-            <button class="ghost-btn" onclick="goHome()">Home</button>
-            <button class="ghost-btn" onclick="goToReservationPage()">Book Reservation</button>
-            <button class="ghost-btn" onclick="copyOwnerNumber()">Call Owner</button>
+            <button class="ghost-btn" type="button" onclick="goHome()">Home</button>
+            <button class="ghost-btn" type="button" onclick="goToReservationPage()">Book Reservation</button>
+            <button class="ghost-btn" type="button" onclick="copyOwnerNumber()">Call Owner</button>
           </div>
         </div>
       </div>
@@ -835,8 +835,8 @@
         </div>
 
         <div class="cart-actions">
-          <button class="btn btn-secondary" onclick="clearCart()">Clear Cart</button>
-          <button class="btn btn-accent" onclick="goToOrderPage()">Place Order</button>
+          <button class="btn btn-secondary" type="button" onclick="clearCart()">Clear Cart</button>
+          <button class="btn btn-accent" type="button" onclick="goToOrderPage()">Place Order</button>
         </div>
       </div>
     </div>
@@ -851,7 +851,7 @@
             <h1>Order Summary</h1>
             <p>Check items, total price, and delivery details before placing the order in Firebase.</p>
           </div>
-          <button class="ghost-btn" onclick="goToMenu()">Back to Menu</button>
+          <button class="ghost-btn" type="button" onclick="goToMenu()">Back to Menu</button>
         </div>
 
         <div class="summary-list" id="summaryList"></div>
@@ -881,8 +881,8 @@
         </div>
 
         <div class="summary-actions">
-          <button class="btn btn-secondary" onclick="clearCart()">Clear Cart</button>
-          <button class="btn btn-accent" id="placeOrderBtn" onclick="placeOrder()" disabled>Place Order</button>
+          <button class="btn btn-secondary" type="button" onclick="clearCart()">Clear Cart</button>
+          <button class="btn btn-accent" id="placeOrderBtn" type="button" onclick="placeOrder()" disabled>Place Order</button>
         </div>
       </div>
     </div>
@@ -897,7 +897,7 @@
             <h1>Book a Reservation</h1>
             <p>Reserve your table with a few details. Every required field is marked with an asterisk.</p>
           </div>
-          <button class="ghost-btn" onclick="goHome()">Back to Home</button>
+          <button class="ghost-btn" type="button" onclick="goHome()">Back to Home</button>
         </div>
 
         <div class="reservation-grid">
@@ -969,8 +969,8 @@
         </div>
 
         <div class="reservation-actions">
-          <button class="btn btn-secondary" onclick="goHome()">Cancel</button>
-          <button class="btn btn-accent" id="bookReservationBtn" onclick="bookReservation()" disabled>Book Table</button>
+          <button class="btn btn-secondary" type="button" onclick="goHome()">Cancel</button>
+          <button class="btn btn-accent" id="bookReservationBtn" type="button" onclick="bookReservation()" disabled>Book Table</button>
         </div>
       </div>
     </div>
@@ -985,7 +985,7 @@
             <h1 id="successHeading">Your order is in process</h1>
             <p id="successDescription">Refresh-safe flow: the success view is temporary, and the page starts fresh on reload.</p>
           </div>
-          <button class="ghost-btn" onclick="copyOwnerNumber()">Call for fast delivery</button>
+          <button class="ghost-btn" type="button" onclick="copyOwnerNumber()">Call for fast delivery</button>
         </div>
 
         <div class="order-id-box">
@@ -993,9 +993,9 @@
           <code id="orderIdText">ORD-00000</code>
           <div class="copy-hint" id="successHint">Copy and keep this order ID for reference. You can share it with the owner if needed.</div>
           <div class="success-actions">
-            <button class="btn btn-secondary" onclick="copyOrderId()">Copy Order ID</button>
-            <button class="btn btn-primary" id="successPrimaryAction" onclick="handleSuccessPrimary()">Call Owner: 9101624416</button>
-            <button class="btn btn-accent" onclick="goHome()">Place New Order</button>
+            <button class="btn btn-secondary" type="button" onclick="copyOrderId()">Copy Order ID</button>
+            <button class="btn btn-primary" id="successPrimaryAction" type="button" onclick="handleSuccessPrimary()">Call Owner: 9101624416</button>
+            <button class="btn btn-accent" type="button" onclick="goHome()">Place New Order</button>
           </div>
         </div>
 
@@ -1028,7 +1028,7 @@
       {
         img: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1400&q=80",
         chip: "Signature feast",
-        title: "Taste the best of Nimantran"
+        title: "Taste the best of Happy Valley"
       },
       {
         img: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=1400&q=80",
@@ -1275,9 +1275,9 @@
                     <div class="price">₹${item.price}</div>
                   </div>
                   <div class="qty-box">
-                    <button class="qty-btn" onclick="changeQty('${item.name}', -1)">−</button>
+                    <button class="qty-btn" type="button" onclick="changeQty('${item.name}', -1)">−</button>
                     <span class="qty-num" id="qty-${cssSafe(item.name)}">0</span>
-                    <button class="qty-btn" onclick="changeQty('${item.name}', 1)">+</button>
+                    <button class="qty-btn" type="button" onclick="changeQty('${item.name}', 1)">+</button>
                   </div>
                 </div>
               `).join("")}
@@ -1532,6 +1532,7 @@
       const payload = {
         type: "reservation",
         reservationId,
+        orderId: reservationId,
         customerName: data.name,
         customerPhone: data.phone,
         customerEmail: data.email,
@@ -1541,10 +1542,11 @@
         occasion: data.occasion,
         tablePreference: data.tablePreference,
         specialRequests: data.requests || "",
-        status: "Pending",
+        status: "New",
         createdAt: serverTimestamp()
       };
-      await addDoc(collection(db, "reservations"), payload);
+
+      await addDoc(collection(db, "orders"), payload);
       return reservationId;
     }
 
@@ -1664,6 +1666,7 @@
           requests
         });
         showScreen("successScreen");
+        clearCart();
         clearReservationForm();
         toast("Reservation booked");
       } catch (error) {
